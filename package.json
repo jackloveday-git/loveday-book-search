@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/mongoose": "^5.11.97",
     "concurrently": "^5.3.0"
   },
   "dependencies": {
