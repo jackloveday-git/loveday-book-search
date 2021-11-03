@@ -15,8 +15,10 @@ const PORT = process.env.PORT || 3001;
 
 // Setup the Apollo server
 const aServer = new ApolloServer({
-  // Pass in Schema data here later
 
+  // Pass in Schema data here later
+  typeDefs, // Type Defs
+  resolvers, // Db Resolvers
   context: authMiddleware
 })
 
