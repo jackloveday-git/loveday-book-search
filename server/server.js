@@ -7,23 +7,28 @@ const { authMiddleware } = require('./utils/auth');
 const express = require('express');
 const path = require('path');
 const db = require('./config/connection');
-const routes = require('./routes');
 const { typeDefs, resolvers } = require('./schemas');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Setup the Apollo server
-const aServer = new ApolloServer({
+const runServer = async () => {
+  const aServer = new ApolloServer({
 
-  // Pass in Schema data here later
-  typeDefs, // Type Defs
-  resolvers, // Db Resolvers
-  context: authMiddleware
-})
+    // Pass in Schema data here later
+    typeDefs, // Type Defs
+    resolvers, // Db Resolvers
+    context: authMiddleware
+  })
 
-// Init the server
-aServer.applyMiddleware({ app });
+  // Start the server
+  await aServer.runServer();
+
+  // Init the server
+  aServer.applyMiddleware({ app });
+  console.log(`Use GraphQL at http://localhost:${PORT}${aServer.graphqlPath}`);
+}
 
 // Connect other middleware
 app.use(express.urlencoded({ extended: true }));
@@ -43,17 +48,18 @@ app.get('*', (req, res) => {
     ));
 });
 
-// Remove later?
-app.use(routes);
+// Call start
+runServer();
 
 // Edit server run/listen
 db.once('open', () => {
 
   // Open up function to add needed edits
   app.listen(PORT, () => {
-    console.log(`🌍 Now listening on localhost:${PORT}`);
-
-    // Then Log GraphQL log
-    console.log(`Use GraphQL at http://localhost:${PORT}${aServer.graphqlPath}`);
+    console.log(`Now listening on localhost:${PORT}`);
   });
+});
+
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
 });

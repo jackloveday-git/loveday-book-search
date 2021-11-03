@@ -17,7 +17,7 @@ const resolvers = {
                 const userData = await User
                     .findOne({})
                     .select('-__v -password')
-                    .populate('books')
+                    // .populate('books')
                 return userData;
             };
 
