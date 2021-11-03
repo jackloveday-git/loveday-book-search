@@ -6,7 +6,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import Auth from '../utils/auth';
 
 // Import dependencies for apollo and mutations
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 
 
@@ -24,6 +24,12 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     // Adjust Try to check for login and work with apollo/gql - Jack Loveday
     try {
 
@@ -31,6 +37,10 @@ const LoginForm = () => {
       const { data } = await loginUser({
         variables: { ...userFormData }
       });
+
+      if (error) {
+        throw new Error("Something went wrong!");
+      }
 
       // Login with token
       Auth.login(data.login.token)
