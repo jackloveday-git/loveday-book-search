@@ -48,9 +48,6 @@ app.get('*', (req, res) => {
     ));
 });
 
-// Call start
-runServer();
-
 // Edit server run/listen
 db.once('open', () => {
 
