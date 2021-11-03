@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3001;
 
 // Setup the Apollo server
 const runServer = async () => {
-  const aServer = new ApolloServer({
+  const server = new ApolloServer({
 
     // Pass in Schema data here later
     typeDefs, // Type Defs
@@ -23,11 +23,11 @@ const runServer = async () => {
   })
 
   // Start the server
-  await aServer.runServer();
+  await server.runServer();
 
   // Init the server
-  aServer.applyMiddleware({ app });
-  console.log(`Use GraphQL at http://localhost:${PORT}${aServer.graphqlPath}`);
+  server.applyMiddleware({ app });
+  console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
 }
 
 // Connect other middleware
