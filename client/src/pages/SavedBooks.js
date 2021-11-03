@@ -1,6 +1,7 @@
 // Modified SavedBooks.js by Jack Loveday
 
 // Edited original imports
+import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import Auth from '../utils/auth';
 import { removeBookId, saveBookIds } from '../utils/localStorage';
@@ -29,14 +30,10 @@ const SavedBooks = () => {
 
     // Otherwise try to remove the book
     try {
-      const removeBookData = await removeBook({
-        variables: { bookId: bookId },
-      });
-
-      // Make sure response data is valid, if not throw error
-      if (!removeBookData) {
-        throw new Error("Book is invalid or cannot be removed");
-      }
+      const { data }
+        = await removeBook({
+          variables: { bookId: bookId },
+        });
 
       // Book must be there so remove it
       removeBookId(bookId);
@@ -51,13 +48,6 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>Content is Loading. . .</h2>;
   }
-
-  // Verify query and storage are correct
-  const savedBookIds = userData
-    .savedBooks.map((book) => {
-      book.bookId
-    });
-  saveBookIds(savedBookIds);
 
   // Then display our book info
   return (

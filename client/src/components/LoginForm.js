@@ -35,11 +35,6 @@ const LoginForm = () => {
       // Login with token
       Auth.login(data.login.token)
 
-      // Check if response is valid
-      if (!response.ok) {
-        throw new Error('Login is invalid');
-      }
-
       // Catch error
     } catch (err) {
       console.error(err);
