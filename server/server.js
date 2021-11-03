@@ -22,7 +22,6 @@ const aServer = new ApolloServer({
   context: authMiddleware
 })
 
-
 // Init the server
 aServer.applyMiddleware({ app });
 
