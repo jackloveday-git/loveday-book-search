@@ -15,9 +15,9 @@ const resolvers = {
             // Check for valid user
             if (context.user) {
                 const userData = await User
-                    .findOne({})
+                    .findOne({ _id: context.user._id })
                     .select('-__v -password')
-                    // .populate('books')
+                // .populate('books')
                 return userData;
             };
 
