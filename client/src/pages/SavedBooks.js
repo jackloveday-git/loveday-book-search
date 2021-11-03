@@ -4,10 +4,10 @@
 import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 import Auth from '../utils/auth';
-import { removeBookId, saveBookIds } from '../utils/localStorage';
+import { removeBookId } from '../utils/localStorage';
 
 // Import dependencies
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 
@@ -34,6 +34,8 @@ const SavedBooks = () => {
         = await removeBook({
           variables: { bookId: bookId },
         });
+
+      if (error) { throw new Error('Something went wrong!') }
 
       // Book must be there so remove it
       removeBookId(bookId);
@@ -68,17 +70,15 @@ const SavedBooks = () => {
           {userData.savedBooks.map((book) => {
             return (
               <Card key={book.bookId} border="dark">
-                {book.image ? (
-                  <Card.Img
-                    src={book.image}
-                    alt={`The cover for ${book.title}`}
-                    variant="top"
-                  />
-                ) : null}
+                {book.image ? <Card.Img src={book.image}
+                  alt={`The cover for ${book.title}`}
+                  variant='top'
+                /> : null}
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
                   <p className="small">Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
+                  <a href={book.link} target="_blank">Book Preview</a>
                   <Button
                     className="btn-block btn-danger"
                     onClick={() => handleDeleteBook(book.bookId)}
